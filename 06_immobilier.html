@@ -19,38 +19,6 @@
   </head>
   <body>
     <div class="container-fluid">
-        <!-- ========================================= -->
-        <!-- Navbar -->
-        <!-- ========================================= -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="#">Navbar scroll</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarScroll">
-              <ul class="navbar-nav mr-auto my-2 my-lg-0 navbar-nav-scroll" style="max-height: 100px;">
-                  <li class="nav-item">
-                      <a class="nav-link" href="index.html">Index</a>
-                  </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="requete-1.html">Pratique pt.1</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link" href="requete-2.html">Pratique pt.2</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle active" href="#" id="navbarScrollingDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
-                    Pratique pt.3
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                        <li><a class="dropdown-item" href="#insertInto">1-Requête d'insertion</a></li>
-                    </ul>
-                </li>
-              </ul>
-          </div>
-          </nav>
-    </div><!-- fin du container fluid -->
 
         
 
@@ -130,37 +98,41 @@
 
         <div class="row m-2 border p-2">
             <div class="col-sm-12">
-                <h2 class="text-center" id="">2 - Questions sur la BDD</h2>
+                <h2 class="text-center" id="">2 - EXOS BDD</h2>
             </div>
             <div class="col-sm-12">
                 <ol>
-                    <li>Affichez le nom des agences : <code>SELECT nom FROM agence;</code></li>
-                    <li>Affichez le numéro de l'agence « Orpi » : <code>SELECT idAgence FROM agence WHERE nom = 'Orpi';</code></li>
-                    <li>Affichez le premier enregistrement de la table logement : <code>SELECT * FROM logement WHERE idLogement=(SELECT MIN(idLogement) FROM logement)</code> OU <code>SELECT * FROM logement ORDER BY idLogement LIMIT 0,1;</code></li>
-                    <li>Affichez le nombre de logements (Alias : Nombre_de_logements) : <code>SELECT COUNT(idLogement) AS 'nombre de logements' FROM logement;</code></li>
-                    <li>Affichez les logements à vendre à moins de 150 000 € dans l'ordre croissant des prix : <code>SELECT * FROM logement WHERE prix < 150000 AND categorie ='vente' ORDER BY prix;</code></li>
-                    <li>Afficher le nombre de logements à la location (alias : 'nombre') : <code>SELECT COUNT(idLogement) AS 'nombre' FROM logement WHERE categorie = 'location';</code></li>
-                    <li>Afficher les villes différentes recherchées par les personnes demandeuse d'un logement : <code>SELECT DISTINCT ville FROM demande;</code></li>
-                    <li>Affichez le nombre de biens à vendre par ville : <code>SELECT COUNT(idLogement) AS 'nombre de logements', ville FROM logement WHERE ville IN (SELECT DISTINCT(ville) FROM logement) AND categorie = 'vente' GROUP BY ville</code> OU <code>SELECT ville, COUNT(ville)AS 'nombre de logements à la vente' FROM logement WHere categorie= 'vente' GROUP BY 'ville';</code></li>
-                    <li>Quels sont les id des logements destinés à la location ? : <code>SELECT idLogement FROM logement WHERE categorie='location';</code></li>
-                    <li>Quels sont les id des logements entre 20 et 30m² ? : <code>SELECT idLogement FROM logement WHERE superficie BETWEEN '20' AND '30';</code></li>
-                    <li>Quel est le prix vendeur(hors comissission) du logement le moins cher a vendre ? : <code>SELECT * FROM logement WHERE categorie = 'vente' LIMIT 0,1 ORDER BY prix ASC;</code> OU <code>SELECT MIN(prix) AS 'prix minimum' FROM logement WHERE categorie = 'vente';</code></li>
-                    <li>Dans quelle ville se trouve les maisons à vendre ? : <code>SELECT DISTINCT(ville) FROM logement WHERE genre = 'maison' AND categorie = 'vente';</code></li>
-                    <li>L'agence Orpi souhaite diminuer les frais qu'elle applique sur le logement ayant l'id « 5246 ». Passer les frais de ce logement de 800 à 730€ : <code> UPDATE logement_agence SET frais = 730 WHERE idLogement = (SELECT idAgence FROM agence WHERE nom='Orpi'); </code></li>
-                    <li>Quels sont les logements gérés par l'agence « laforet » : <code>SELECT idLogement FROM logement_agence WHERE idAgence = (SELECT idAgence FROM agence WHERE nom = 'laforet')</code></li>
-                    <li>Affichez le nombre de propriétaires dans la ville de Paris (Alias : Nombre propriétaire parisien) : <code>SELECT COUNT(DISTINCT(lp.idPersonne)) AS 'nombre de proprios parisiens' FROM logement_personne lp, logement l WHERE lp.idLogement = l.idLogement AND l.ville='paris'</code></li>
-                    <li>Afficher les infos des trois premières personnes souhaitant acheter un logement : <code>SELECT * FROM personne p, demande d  WHERE p.idPersonne = d.idPersonne and d.categorie = 'vente' ORDER BY d.idDemande LIMIT 0,3;</code></li>
-                    <li>Affichez le prénom du vendeur pour le logement ayant la référence « 5770 » : <code>SELECT p.prenom, lp.idLogement FROM personne p, logement_personne lp WHERE p.idPersonne = lp.idPersonne AND lp.idLogement=5770;</code></li>
-                    <li>Affichez les prénoms des personnes souhaitant accéder à un logement sur la ville de Lyon : <code>SELECT p.prenom FROM personne p, demande d WHERE d.idPersonne = p.idPersonne AND ville = 'Lyon';</code> OU <code>SELECT prenom FROM personne WHERE idPersonne IN (SELECT idPersonne FROM demande WHERE ville='lyon'); </code></li>
-                    <li>Affichez les prénoms des personnes souhaitant accéder à un logement en location sur la ville de Paris : <code>SELECT p.prenom FROM personne p, demande d WHERE p.idPersonne = d.idPersonne AND ville = 'Paris' AND categorie = 'location';</code></li>
-                    <li>Affichez les prénoms des personnes souhaitant acheter un logement de la plus grande à la plus petite superficie : <code>SELECT p.prenom, d.superficie FROM personne p, demande d WHERE p.idPersonne = d.idPersonne AND d.categorie = 'vente' ORDER BY d.superficie DESC;</code></li>
-                    <li>Quel sont les prix finaux proposés par les agences pour la maison à la vente ayant la référence « 5091 » ? (Alias : prix frais d'agence inclus) : <code>SELECT a.nom, (la.frais+l.prix) AS 'prix finaux' FROM agence a, logement_agence la, logement l WHERE a.idAgence = la.idAgence AND l.idLogement = la.idLogement AND la.idLogement = 5091</code></li>
-                    <li>Indiquez le prix total (prix et frais d'agence) pour le logement ayant la référence « 5873 » : <code>SELECT  la.idLogement, l.prix, la.frais, (l.prix+la.frais) AS 'prix total' FROM logement_agence la, logement l la WHERE l.idLogement = la.idLogement AND l.idLogement = 5873;</code></li>
-                    <li>Si l'ensemble des logements étaient vendus ou loués demain, quel serait le bénéfice généré grâce aux frais d'agence et pour chaque agence (Alias : benefice, classement : par ordre croissant des gains) : <code>SELECT a.nom, SUM(la.frais) AS 'total des frais' FROM agence a, logement_agence la WHERE a.idAgence = la.idAgence GROUP BY a.nom </code></li>
-                    <li>Affichez les id des biens en location, les prix, suivis des frais d'agence (classement : dans l'ordre croissant des prix) : <code>SELECT a.nom, l.idLogement, l.prix, la.frais FROM agence a, logement l, logement_agence la WHERE l.idLogement = la.idLogement AND a.idAgence = la.idAgence AND l.categorie = 'location' ORDER BY l.prix ASC</code></li>
-                    <li>Quel est le prénom du propriétaire proposant le logement le moins cher à louer ? : <code>SELECT p.prenom, l.idLogement, l.prix FROM personne p, logement l, logement_personne lp WHERE p.idPersonne = lp.idPersonne AND l.idLogement = lp.idLogement AND categorie ='location' ORDER BY l.prix ASC LIMIT 0,1</code></li>
-                    <li>Affichez le prénom et la ville où se trouve le logement de chaque propriétaire : <code>SELECT p.prenom, l.ville FROM personne p, logement l, logement_personne lp WHERE p.idPersonne = lp.idPersonne AND l.idLogement = lp.idLogement AND l.categorie = 'vente'</code></li>
+                    <li>Affichez le nom des agences : <code>SELECT nom FROM agence ORDER BY nom DESC;</code></li>
 
+                    <li>Affichez le numéro de l'agence « Orpi » : <code>SELECT idAgence FROM agence WHERE nom = 'Orpi';</code></li>
+
+                    <li>Affichez le premier enregistrement de la table logement : <code>SELECT * FROM logement WHERE idLogement=(SELECT MIN(idLogement) FROM logement)</code> OU <code>SELECT * FROM logement ORDER BY idLogement LIMIT 0,1;</code></li>
+
+                    <li>Affichez le nombre de logements (Alias : Nombre_de_logements) : <code>SELECT COUNT(idLogement) AS 'nombre de logements' FROM logement;</code></li>
+
+                    <li>Affichez les logements à vendre à moins de 150 000 € dans l'ordre croissant des prix : <code>SELECT * FROM logement WHERE prix < 150000 AND categorie ='vente' ORDER BY prix;</code></li>
+
+                    <li>Afficher le nombre de logements à la location (alias : 'nombre') : <code>SELECT COUNT(idLogement) AS 'nombre' FROM logement WHERE categorie = 'location';</code></li>
+
+                    <li>Afficher les villes différentes recherchées par les personnes demandeuse d'un logement : <code>SELECT DISTINCT ville FROM demande;</code></li>
+
+                    <li>Affichez le nombre de biens à vendre par ville : <code>SELECT COUNT(idLogement) AS 'nombre de logements', ville FROM logement WHERE ville IN (SELECT DISTINCT(ville) FROM logement) AND categorie = 'vente' GROUP BY ville</code> OU <code>SELECT ville, COUNT(ville)AS 'nombre de logements à la vente' FROM logement WHere categorie= 'vente' GROUP BY 'ville';</code></li>
+
+                    <li>Quels sont les id des logements destinés à la location ? : <code>SELECT idLogement FROM logement WHERE categorie='location';</code></li>
+
+                    <li>Quels sont les id des logements entre 20 et 30m² ? : <code>SELECT idLogement FROM logement WHERE superficie BETWEEN '20' AND '30';</code></li>
+
+                    <li>Quel est le prix vendeur(hors comissission) du logement le moins cher a vendre ? : <code>SELECT * FROM logement WHERE categorie = 'vente' LIMIT 0,1 ORDER BY prix ASC;</code> OU <code>SELECT MIN(prix) AS 'prix minimum' FROM logement WHERE categorie = 'vente';</code></li>
+
+                    <li>Dans quelle ville se trouve les maisons à vendre ? : <code>SELECT DISTINCT(ville) FROM logement WHERE genre = 'maison' AND categorie = 'vente';</code></li>
+
+                    <li>L'agence Orpi souhaite diminuer les frais qu'elle applique sur le logement ayant l'id « 5246 ». Passer les frais de ce logement de 800 à 730€ : <code> UPDATE logement_agence SET frais = 730 WHERE idLogement = (SELECT idAgence FROM agence WHERE nom='Orpi'); </code></li>
+
+                    <li>Quels sont les logements gérés par l'agence « laforet » : <code>SELECT idLogement FROM logement_agence WHERE idAgence = (SELECT idAgence FROM agence WHERE nom = 'laforet')</code></li>
+
+                    <li>Affichez le nombre de propriétaires dans la ville de Paris (Alias : Nombre propriétaire parisien) : <code>SELECT COUNT(DISTINCT(lp.idPersonne)) AS 'nombre de proprios parisiens' FROM logement_personne lp, logement l WHERE lp.idLogement = l.idLogement AND l.ville='paris'</code></li>
+
+                    <li>Afficher les infos des trois premières personnes souhaitant acheter un logement : <code>SELECT * FROM personne p, demande d  WHERE p.idPersonne = d.idPersonne and d.categorie = 'vente' ORDER BY d.idDemande LIMIT 0,3;</code></li>
                 </ol>
             </div>
         </div>
